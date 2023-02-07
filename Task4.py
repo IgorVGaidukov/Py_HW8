@@ -38,3 +38,35 @@
 и достучаться до списка, который и нужно пополнять
 а потом сохранять все в файл
 """
+
+import json
+
+
+def write_order_to_json(item, quantity, price, buyer, date):
+    with open("orders.json", 'w', encoding='utf-8') as j_file:
+        order_list.append({
+            "item": item,
+            "quantity": quantity,
+            "price": price,
+            "buyer": buyer,
+            "date": date
+        })
+        json.dump({"orders": order_list}, j_file)
+
+
+try:
+    with open("orders.json", 'r', encoding='utf-8') as j_file:
+        orders = json.load(j_file)
+except IOError:
+    print('Сохраненных заказов нет!')
+    order_list = []
+else:
+    order_list = list(orders.get("orders"))
+
+# print(order_list)
+
+while input('Добавить заказ? (1-да): ') == '1':
+    write_order_to_json(input('Ведите название товара: '),
+                        input('Ведите количество: '),
+                        input('Ведите цену товара: '),
+                        input('Ведите покупателя: '), input('Ведите дату: '))
